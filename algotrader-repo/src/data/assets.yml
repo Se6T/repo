@@ -1,0 +1,137 @@
+assets:
+  IRX:
+    symbol: ^IRX
+    type: Bond-Yield
+    api: yfinance
+  FVX:
+    symbol: ^FVX
+    type: Bond-Yield
+    api: yfinance
+  TNX:
+    symbol: ^TNX
+    type: Bond-Yield
+    api: yfinance
+  TYX:
+    symbol: ^TYX
+    type: Bond-Yield
+    api: yfinance
+  DXY:
+    symbol: DX-Y.NYB
+    type: Currency
+    api: yfinance
+  EURUSD:
+    symbol: EURUSD=X
+    type: Forex
+    api: yfinance
+  GBPUSD:
+    symbol: GBPUSD=X
+    type: Forex
+    api: yfinance
+  USDJPY:
+    symbol: USDJPY=X
+    type: Forex
+    api: yfinance
+  CNYUSD:
+    symbol: CNYUSD=X
+    type: Forex
+    api: yfinance
+  AUDUSD:
+    symbol: AUDUSD=X
+    type: Forex
+    api: yfinance
+  CADUSD:
+    symbol: CADUSD=X
+    type: Forex
+    api: yfinance
+  SP500:
+    symbol: ^SPX
+    type: Index
+    api: yfinance
+  NASDAQ:
+    symbol: ^IXIC
+    type: Index
+    api: yfinance
+  DOW:
+    symbol: ^DJI
+    type: Index
+    api: yfinance
+  VIX:
+    symbol: ^VIX
+    type: Index
+    api: yfinance
+  Nikkei:
+    symbol: ^N225
+    type: Index
+    api: yfinance
+  FTSE:
+    symbol: ^FTSE
+    type: Index
+    api: yfinance
+  Oil:
+    symbol: CL=F
+    type: Commodity
+    api: yfinance
+  Copper:
+    symbol: HG=F
+    type: Commodity
+    api: yfinance
+  Gold:
+    symbol: GLD
+    type: Commodity
+    api: yfinance
+  Silver:
+    symbol: SI=F
+    type: Commodity
+    api: yfinance
+  NatGas:
+    symbol: NG=F
+    type: Commodity
+    api: yfinance
+  GOOGL:
+    symbol: GOOGL
+    type: Stock
+    api: yfinance
+  MSFT:
+    symbol: MSFT
+    type: Stock
+    api: yfinance
+  AAPL:
+    symbol: AAPL
+    type: Stock
+    api: yfinance
+  TSLA:
+    symbol: TSLA
+    type: Stock
+    api: yfinance
+  ARKK:
+    symbol: ARKK
+    type: Stock
+    api: yfinance
+  BTC:
+    symbol: BTC-USD
+    type: Cryptocurrency
+    api: yfinance
+  ETH:
+    symbol: ETH-USD
+    type: Cryptocurrency
+    api: yfinance
+  CMC200:
+    symbol: ^CMC200
+    type: Cryptocurrency
+    api: yfinance
+  ADA:
+    symbol: ADA-USD
+    type: Cryptocurrency
+    api: yfinance
+  SOL:
+    symbol: SOL-USD
+    type: Cryptocurrency
+    api: yfinance
+  BNB:
+    symbol: BNB-USD
+    type: Cryptocurrency
+    api: yfinance
+  XRP:
+    symbol: XRP-USD
+    type: Cryptocurrency
+    api: yfinance
