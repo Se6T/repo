@@ -1,137 +1,137 @@
 assets:
   IRX:
-    symbol: ^IRX
+    ticker: ^IRX
     type: Bond-Yield
     api: yfinance
   FVX:
-    symbol: ^FVX
+    ticker: ^FVX
     type: Bond-Yield
     api: yfinance
   TNX:
-    symbol: ^TNX
+    ticker: ^TNX
     type: Bond-Yield
     api: yfinance
   TYX:
-    symbol: ^TYX
+    ticker: ^TYX
     type: Bond-Yield
     api: yfinance
   DXY:
-    symbol: DX-Y.NYB
+    ticker: DX-Y.NYB
     type: Currency
     api: yfinance
   EURUSD:
-    symbol: EURUSD=X
+    ticker: EURUSD=X
     type: Forex
     api: yfinance
   GBPUSD:
-    symbol: GBPUSD=X
+    ticker: GBPUSD=X
     type: Forex
     api: yfinance
   USDJPY:
-    symbol: USDJPY=X
+    ticker: USDJPY=X
     type: Forex
     api: yfinance
   CNYUSD:
-    symbol: CNYUSD=X
+    ticker: CNYUSD=X
     type: Forex
     api: yfinance
   AUDUSD:
-    symbol: AUDUSD=X
+    ticker: AUDUSD=X
     type: Forex
     api: yfinance
   CADUSD:
-    symbol: CADUSD=X
+    ticker: CADUSD=X
     type: Forex
     api: yfinance
   SP500:
-    symbol: ^SPX
+    ticker: ^SPX
     type: Index
     api: yfinance
   NASDAQ:
-    symbol: ^IXIC
+    ticker: ^IXIC
     type: Index
     api: yfinance
   DOW:
-    symbol: ^DJI
+    ticker: ^DJI
     type: Index
     api: yfinance
   VIX:
-    symbol: ^VIX
+    ticker: ^VIX
     type: Index
     api: yfinance
   Nikkei:
-    symbol: ^N225
+    ticker: ^N225
     type: Index
     api: yfinance
   FTSE:
-    symbol: ^FTSE
+    ticker: ^FTSE
     type: Index
     api: yfinance
   Oil:
-    symbol: CL=F
+    ticker: CL=F
     type: Commodity
     api: yfinance
   Copper:
-    symbol: HG=F
+    ticker: HG=F
     type: Commodity
     api: yfinance
   Gold:
-    symbol: GLD
+    ticker: GLD
     type: Commodity
     api: yfinance
   Silver:
-    symbol: SI=F
+    ticker: SI=F
     type: Commodity
     api: yfinance
   NatGas:
-    symbol: NG=F
+    ticker: NG=F
     type: Commodity
     api: yfinance
   GOOGL:
-    symbol: GOOGL
+    ticker: GOOGL
     type: Stock
     api: yfinance
   MSFT:
-    symbol: MSFT
+    ticker: MSFT
     type: Stock
     api: yfinance
   AAPL:
-    symbol: AAPL
+    ticker: AAPL
     type: Stock
     api: yfinance
   TSLA:
-    symbol: TSLA
+    ticker: TSLA
     type: Stock
     api: yfinance
   ARKK:
-    symbol: ARKK
+    ticker: ARKK
     type: Stock
     api: yfinance
   BTC:
-    symbol: BTC-USD
+    ticker: BTC-USD
     type: Cryptocurrency
     api: yfinance
   ETH:
-    symbol: ETH-USD
+    ticker: ETH-USD
     type: Cryptocurrency
     api: yfinance
   CMC200:
-    symbol: ^CMC200
+    ticker: ^CMC200
     type: Cryptocurrency
     api: yfinance
   ADA:
-    symbol: ADA-USD
+    ticker: ADA-USD
     type: Cryptocurrency
     api: yfinance
   SOL:
-    symbol: SOL-USD
+    ticker: SOL-USD
     type: Cryptocurrency
     api: yfinance
   BNB:
-    symbol: BNB-USD
+    ticker: BNB-USD
     type: Cryptocurrency
     api: yfinance
   XRP:
-    symbol: XRP-USD
+    ticker: XRP-USD
     type: Cryptocurrency
     api: yfinance
