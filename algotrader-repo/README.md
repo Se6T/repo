@@ -3,6 +3,16 @@ algotrader
 
 Predict and manage trades using powerful machine learning algorithms.
 
+Run python predict.py to:
+    * fetch new data
+    * add features
+    * predict on existing models
+
+Additionally, this package makes training new models with different hyperparameters easy, 
+includes backtesting and creates visualizations.
+
+
+
 Project Organization
 ------------
 
@@ -10,7 +20,7 @@ Project Organization
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
-    │   ├── external       <- Data from third party sources.
+    │   ├── external       <- Data downloaded manually or created maunally
     │   ├── interim        <- Intermediate data that has been transformed.
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
