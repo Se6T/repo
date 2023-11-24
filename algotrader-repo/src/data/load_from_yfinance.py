@@ -40,13 +40,7 @@ def add_to_existing_file(df: pd.DataFrame, ticker: str, freq: str) -> None:
 
 
 def load_asset(asset: dict, freq: str = '1d') -> None:
-    """
-    Load data with load_yf
-    Add to existing file if possible
-    Store in raw
-    """
-
-    ticker = asset.ticker
+    ticker = asset['ticker']
 
     df = load_yf(ticker, freq)
     df = add_to_existing_file(df, ticker, freq)

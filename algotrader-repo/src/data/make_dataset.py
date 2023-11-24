@@ -21,7 +21,7 @@ def main(assets_yaml_filepath, freq, output_filepath):
     logger = logging.getLogger(__name__)
     
     with open(assets_yaml_filepath, 'r') as file:
-        assets_dict = yaml.load(file, Loader=yaml.FullLoader)
+        assets_dict = yaml.load(file, Loader=yaml.FullLoader)['assets']
     
     logger.info('downloading and stroing assets')
 
@@ -37,6 +37,7 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
+    os.chdir('algotrader-repo\\src\\data')
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
 

@@ -71,10 +71,12 @@ def add_datetime_features(df: pd.DataFrame) -> pd.DataFrame:
 def merge_assets(output_filepath: str, freq: str, index_name='Date') -> None:
     raw_path = '../../data/raw'
     file_list = os.listdir(raw_path)
+    file_list = [file for file in file_list if file.endswith('.csv')]
     full_df = pd.DataFrame()
 
     for filename in file_list:
         file_path = os.path.join(raw_path, filename)
+        print(file_path)
         df = load_data(file_path, index_name)
 
         ticker = filename.split('_')[0]
