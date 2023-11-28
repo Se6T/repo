@@ -7,9 +7,10 @@ from sklearn.preprocessing import StandardScaler
 def remove_nans(df: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
     # get rid of nan columns
     nan_columns = set(df.columns[df.isna().all()])
-    inf_columns = set(df.columns[df.isinf().all()])
+    # inf_columns = set(df.columns[df.applymap(np.isinf).any()])
     cols_without_info = set([col for col in df.columns if df[col].sum() == 0.0])
-    remove_columns = list(nan_columns.union(inf_columns).union(cols_without_info))
+    # remove_columns = list(nan_columns.union(inf_columns).union(cols_without_info))
+    remove_columns = list(nan_columns.union(cols_without_info))
 
     df.drop(columns=remove_columns, inplace=True)
     df.ffill(inplace=True)
@@ -18,8 +19,8 @@ def remove_nans(df: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
     if verbose and remove_columns is not None:
         print(f"Removed Columns: \n{remove_columns}")
     
-    if df.isna().sum().sum() or df.isinf().sum().sum():
-        raise ValueError(f"someting went wrong with replacing NaN s of the dataframe \n{df.columns} \n{df}")
+    # if df.isna().sum().sum():
+    #     raise ValueError(f"someting went wrong with replacing NaN s of the dataframe \n{df.columns} \n{df}")
         
     return df
 
@@ -33,7 +34,7 @@ def yoy_pct_change_df(
         "low_to_low_cycle_progression", 
         "high_to_high_cycle_progression", 
         "cycle_number"], 
-    normalize=False
+    normalize=True
 ):
     """
     Calculates the year on year percentage change. 
@@ -44,18 +45,31 @@ def yoy_pct_change_df(
     
     for col in df.columns:
         if col not in columns_to_keep:
-            df[col] = df[col].pct_change(periods=365) * 100
-    
+            try:
+                df[col] = df[col].pct_change(periods=365) * 100
+            except TypeError as e:
+                print(f"col: {col}")
+                raise(e)
+            
     if normalize:
-        cols_to_change = [col for col in df.columns if col not in columns_to_keep]
-        cols_to_change.append("US-ISM-PMI_Close")
+        cols_to_change = [
+            col for col in df.columns 
+            if col not in columns_to_keep
+            or not col.endswith('Volume')
+        ]
+
+        if "US-ISM-PMI_Close" in df.columns:
+            cols_to_change.append("US-ISM-PMI_Close")
+
+        df.replace([np.inf, -np.inf], 0.0, inplace=True)
+        df.ffill(inplace=True)
+        df.fillna(0.0, inplace=True)
         scaler = StandardScaler()
         df[cols_to_change] = scaler.fit_transform(df[cols_to_change])
     
-    df = df[df['cycle_number'] > 0]  # only take full business cycles
+    df = df.iloc[365:]  # yoy change is nan for first year
     
     return df
-
 
 
 def add_features(df: pd.DataFrame, feature_list: list) -> pd.DataFrame:
@@ -64,10 +78,43 @@ def add_features(df: pd.DataFrame, feature_list: list) -> pd.DataFrame:
     first add all custom stuff, such as business cycle progression, demark indicators
     then add pandas_ta indicators
     """
+    if feature_list is None:
+        return df
+    else:
+        # split by symbol
+        # pandas_ta add features
+        # concat again
+        # return df
+        pass
 
-    pass
+
+def bin_volume(df: pd.DataFrame, n_bins: int = 5) -> pd.DataFrame:
+    vol_cols = [col for col in df.columns if col.endswith('Volume')]
+
+    for column in vol_cols:
+        col = df[column]
+        bin_labels = pd.qcut(col, q=n_bins, labels=False, duplicates='drop')
+        normalized_labels = bin_labels / (n_bins - 1)
+        df[column] = normalized_labels
+    
+    return df
 
 
 def process_df(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    """
+    remove nans
+    add features
+    vol bins
+    yoy_change
+    normalize
+    """
+    df = remove_nans(df)
+    df = add_features(df, feature_list=None)
+    df = bin_volume(df, n_bins=5)
+    df = yoy_pct_change_df(df)
+
+    if df.isna().sum().sum():
+        raise ValueError(f"someting went wrong with replacing NaN s of the dataframe \n{df.columns} \n{df}")
+    
+    return df
 

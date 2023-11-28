@@ -1,6 +1,6 @@
 from torch import nn
 
-from base_model import BaseModel
+from .base_model import BaseModel
 
 
 class LinearRegression(BaseModel):
@@ -38,4 +38,3 @@ class MLP(BaseModel):
     
     def forward(self, x):
         return self.model(x)
-    

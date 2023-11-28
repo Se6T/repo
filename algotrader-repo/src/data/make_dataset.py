@@ -9,7 +9,7 @@ from dotenv import find_dotenv, load_dotenv
 from merge_assets import merge_assets
 from load_from_yfinance import load_asset
 
-
+# ToDo: convert to argparse
 @click.command()
 @click.argument('assets_yaml_filepath', type=click.Path(exists=True), default='assets.yml')
 @click.argument('freq', default='1d')
@@ -37,7 +37,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
-    os.chdir('algotrader-repo\\src\\data')
+    cwd = os.getcwd()
+    os.chdir('src\\data')
     # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
 
@@ -46,3 +47,5 @@ if __name__ == '__main__':
     load_dotenv(find_dotenv())
 
     main()
+    os.chdir(cwd)
+
