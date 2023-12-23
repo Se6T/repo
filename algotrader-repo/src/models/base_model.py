@@ -43,7 +43,7 @@ class BaseModel(nn.Module):
     def _val_fwd(self, X: torch.tensor, y: torch.tensor, criterion: nn.Module, device: str = 'cuda') -> float:
         pred = self._pred(X, device=device)
         loss = criterion(pred.view(y.size()), y.to(device))
-        return loss
+        return loss.item()
 
     def _train_fwd(
             self, X: torch.tensor, y: torch.tensor, criterion: nn.Module, optimizer: optim, device: str = 'cuda'
@@ -53,7 +53,7 @@ class BaseModel(nn.Module):
         loss = criterion(pred.view(y.size()), y.to(device))
         loss.backward()
         optimizer.step()
-        return loss
+        return loss.item()
     
     def run_epoch(
             self, 
@@ -87,6 +87,8 @@ class BaseModel(nn.Module):
             num_epochs: int = 5,  
             device: str = 'cuda'
         ) -> tuple[list, list]:
+        self.to(device)
+        criterion = criterion.to(device)
 
         train_losses, val_losses = [], []
         progress_bar = tqdm(total=num_epochs, desc='Training Progress', position=0, leave=True)
@@ -101,14 +103,14 @@ class BaseModel(nn.Module):
         return train_losses, val_losses
     
     @torch.no_grad()
-    def predict_loader(
+    def _predict_loader(
         self, val_loader: DataLoader, sigma: float = 0.75, device: str = 'cuda'
     ) -> tuple[np.array, np.array, np.array]:
         y_hat, y_true = [], []
         for X, y in val_loader:
             X = X.to(device)
             outputs = self(X).flatten().cpu().numpy()
-            y_true.append(y.numpy())
+            y_true.append(y.numpy().flatten())
             y_hat.append(outputs)
         y_true = np.concatenate(y_true)
         y_hat = np.concatenate(y_hat)
@@ -119,7 +121,7 @@ class BaseModel(nn.Module):
 
     def _calculate_performance_metrics(
             self, y_hat: np.array, y_pred: np.array, y_true: np.array, metrics_dict: dict
-        ) -> np.array:
+        ) -> list:
         performance_metrics = []
         for metric_key in metrics_dict.keys():
             metric = metrics_dict[metric_key]
@@ -131,20 +133,23 @@ class BaseModel(nn.Module):
 
         return performance_metrics
     
-    def _print_performace_metrics(performance_metrics: list, metrics_keys: list) -> None:
+    def _print_performance_metrics(self, metrics_keys: list, performance_metrics: list) -> None:
         for metric_name, score in zip(metrics_keys, performance_metrics):
-            print(f"{metric_name}: {score:.3f}")
+            print(f"{metric_name}: {score:.3f}")  # ToDo: print best possible values additionally
         print("\n")
     
     @torch.no_grad()
     def run_validation(
         self, val_loader: DataLoader, sigma: float = 0.75, task_type: str = 'binary', device: str = 'cuda'
     ) -> None:
+        self.to(device)
+
         y_hat, y_pred, y_true = self._predict_loader(val_loader, sigma, device)
-        if self.task_type == 'binary':
+        if task_type == 'binary':
             metrics_dict = get_metrics_dict(task_type)
+            print(metrics_dict.keys())
             performance_metrics = self._calculate_performance_metrics(y_hat, y_pred, y_true, metrics_dict)
-            self._print_preformance_metrics(performance_metrics)
+            self._print_performance_metrics(metrics_dict.keys(), performance_metrics)
         else:
             raise NotImplementedError(f"No other task other than binary is implemented.")
 
