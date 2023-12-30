@@ -10,7 +10,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from typing import Optional, List
 
-from ..features.build_features import process_df
+from ..features.build_features import process_df, get_returns
 
 
 def get_dataset(filename: str, filepath: str = r"data\interim") -> pd.DataFrame:
@@ -107,7 +107,7 @@ def get_X_y(
     data = get_dataset(filename)  # "merged_assets_2023-11-23.csv"
     df = process_df(data)  # yoy % change of prices, bin vol
 
-    val_idx = int(len(df) * (1 * val_split))
+    val_idx = int(len(df) * (1 - val_split))
     train_df, val_df = df.iloc[:val_idx], df.iloc[val_idx:]
 
     train_dataset = TradingDataset(train_df, seq_length, noise)
@@ -130,4 +130,14 @@ def get_X_y(
         y_val.append(y.numpy())
 
     return (np.array(X_train), np.array(y_train)), (np.array(X_val), np.array(y_val))
+
+
+
+def get_df(filename: str) -> pd.DataFrame:
+    data = get_dataset(filename)
+    # df = process_df(data)
+    df = get_returns(data, diff=90)
+    processed_df = process_df(df)
+
+    return processed_df.bfill()
 
