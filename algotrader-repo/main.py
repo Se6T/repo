@@ -17,8 +17,7 @@ from src.models.linear_model import LinearRegression, MLP
 from src.models.rnn import LSTMModel, GRUModel, RNN
 from src.models.dimensionality_reduction import CustomDownprojection
 from src.features.build_features import get_returns
-
-from scipy.stats import ks_2samp
+from src.utils.ulits import get_summary_statistics
 
 # make_dataset_result = subprocess.run(
 #     [r'C:/Users/stsch/AppData/Local/Microsoft/WindowsApps/python3.9.exe', 
@@ -70,28 +69,11 @@ close_times = downprojection.get_closest_times()
 return_cols = [col for col in close_times.columns if re.search(r'returns_\d+d$', col)]  
 returns = close_times[return_cols]
 
-stats_df = pd.DataFrame()
-for col in returns.columns:
-    non_zero_returns = returns[col][returns[col] != 0.0]
-    expected_returns = df[col][df[col] != 0.0]
-    # Calculate the statistics
-    min_val = non_zero_returns.min()
-    q1 = non_zero_returns.quantile(0.25)
-    median_val = non_zero_returns.median()
-    mean_val = non_zero_returns.mean()
-    q3 = non_zero_returns.quantile(0.75)
-    max_val = non_zero_returns.max()
-    n = non_zero_returns.count()
+fn = "models/downprojection/expected_returns_90d.xlsx"
+stats_df = get_summary_statistics(returns, df, fn)
 
-    D, p_value = ks_2samp(non_zero_returns, expected_returns)
-    stats_df[col] = [min_val, q1, median_val, mean_val, q3, max_val, n, p_value]
-
-stats_df = stats_df.transpose()
-stats_df.columns = ["min", "q1", "median", "mean", "q3", "max", "n", "p_value"]
-
-stats_df.to_excel("models/downprojection/expected_returns_90d.xlsx")
-
-boxplot = close_times[return_cols].boxplot()
+# plot stats_df relative to df 
+boxplot = returns.boxplot()
 plt.savefig('models/downprojection/boxplot.png')
 
 # todo: make plots and xlsx and store in the backgorund when running dim reduction
