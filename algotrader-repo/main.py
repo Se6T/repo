@@ -18,7 +18,7 @@ from src.models.rnn import LSTMModel, GRUModel, RNN
 from src.models.dimensionality_reduction import CustomDownprojection
 from src.features.build_features import get_returns
 from src.utils.ulits import get_summary_statistics
-
+from src.visualization import visualize
 # make_dataset_result = subprocess.run(
 #     [r'C:/Users/stsch/AppData/Local/Microsoft/WindowsApps/python3.9.exe', 
 #      r'src\\data\\make_dataset.py', '--help'], 
@@ -60,9 +60,9 @@ train_loader, val_loader = get_loaders(os.path.join(fn), seq_length=1)
 # )
 # performance_metrics = mlp.run_validation(val_loader)
 
-df = get_df(fn)
+df = get_df(fn).iloc[-7000:]
 
-downprojection = CustomDownprojection(df.iloc[-7000:], dim=3)
+downprojection = CustomDownprojection(df, dim=3)
 
 close_times = downprojection.get_closest_times()
 
@@ -72,9 +72,11 @@ returns = close_times[return_cols]
 fn = "models/downprojection/expected_returns_90d.xlsx"
 stats_df = get_summary_statistics(returns, df, fn)
 
-# plot stats_df relative to df 
-boxplot = returns.boxplot()
-plt.savefig('models/downprojection/boxplot.png')
-
-# todo: make plots and xlsx and store in the backgorund when running dim reduction
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="AAPL", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="BTC", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="^SPX", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="^IXIC", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="GLD", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="TSLA", store=False)
+visualize.plot_boxplots_from_samples(returns, df, asset_symbol="ETH", store=False)
 

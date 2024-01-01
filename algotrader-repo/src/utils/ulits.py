@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 import pandas as pd
 from scipy.stats import ks_2samp
 
@@ -32,13 +31,13 @@ def get_summary_statistics(
 
 def calculate_values(column: pd.Series, ref_column: pd.Series) -> tuple[float]:
     def _calc_values(col: pd.Series) -> tuple[float]:
-        min_val = non_zero_returns.min()
-        q1 = non_zero_returns.quantile(0.25)
-        median_val = non_zero_returns.median()
-        mean_val = non_zero_returns.mean()
-        q3 = non_zero_returns.quantile(0.75)
-        max_val = non_zero_returns.max()
-        n = non_zero_returns.count()
+        min_val = col.min()
+        q1 = col.quantile(0.25)
+        median_val = col.median()
+        mean_val = col.mean()
+        q3 = col.quantile(0.75)
+        max_val = col.max()
+        n = col.count()
         return min_val, q1, median_val, mean_val, q3, max_val, n
 
     non_zero_returns = column[column != 0.0]
