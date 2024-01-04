@@ -45,7 +45,7 @@ def load_asset(asset: dict, freq: str = '1d') -> None:
     df = load_yf(ticker, freq)
     df = add_to_existing_file(df, ticker, freq)
 
-    raw_path = '../../data/raw'
+    raw_path = os.path.join(os.getcwd(), 'data/raw')
     fn = f'{ticker}_{freq}.csv'
     file_path = os.path.join(raw_path, fn)
 

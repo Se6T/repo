@@ -19,14 +19,23 @@ from src.models.dimensionality_reduction import CustomDownprojection
 from src.features.build_features import get_returns
 from src.utils.ulits import get_summary_statistics
 from src.visualization import visualize
-# make_dataset_result = subprocess.run(
-#     [r'C:/Users/stsch/AppData/Local/Microsoft/WindowsApps/python3.9.exe', 
-#      r'src\\data\\make_dataset.py', '--help'], 
-#     capture_output=True,
-# )
-# print(make_dataset_result.stdout.decode())
-# print(make_dataset_result.stderr.decode())
+import os
+import glob
 
+
+directory = r'C:\Users\stsch\Documents\AlgoBoost-Trading-Solutions\repo\algotrader-repo\src\data'
+filename_pattern = 'make_dataset.py'
+file_paths = glob.glob(os.path.join(directory, filename_pattern))
+
+if file_paths:
+    make_dataset_result = subprocess.run(
+        [r'C:/Users/stsch/AppData/Local/Microsoft/WindowsApps/python3.9.exe', file_paths[0]],
+        capture_output=True,
+    )
+    print(make_dataset_result.stdout.decode())
+    print(make_dataset_result.stderr.decode())
+else:
+    print(f"File '{filename_pattern}' not found in directory '{directory}'.")
 
 fn = f"merged_assets_{datetime.today().date()}.csv"
 train_loader, val_loader = get_loaders(os.path.join(fn), seq_length=1)
@@ -61,9 +70,7 @@ train_loader, val_loader = get_loaders(os.path.join(fn), seq_length=1)
 # performance_metrics = mlp.run_validation(val_loader)
 
 df = get_df(fn).iloc[-7000:]
-
 downprojection = CustomDownprojection(df, dim=3)
-
 close_times = downprojection.get_closest_times()
 
 return_cols = [col for col in close_times.columns if re.search(r'returns_\d+d$', col)]  
